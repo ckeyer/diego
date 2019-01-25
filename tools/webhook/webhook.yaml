@@ -1,0 +1,7 @@
+hooks: 
+-
+  param: test1
+  command: uname
+-
+  param: test2
+  command: ps
