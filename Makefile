@@ -33,7 +33,7 @@ build: env go-bindata
 	$(HASH) ${GOPATH}/bin/$(APP)
 
 test:
-	$(GO) test $$(go list ./... |grep -v "vendor")
+	$(GO) test -cover -covermode=count $$(go list ./... |grep -v "vendor")
 
 image:
 	docker build -t ${IMAGE}:${VERSION} .

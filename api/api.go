@@ -5,10 +5,10 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/ckeyer/diego/api/view"
 	"github.com/ckeyer/diego/storage"
 	"github.com/ckeyer/logrus"
 	"github.com/gin-gonic/gin"
+	"gitlab.com/funxdata/commons/pkgs/ginmd"
 )
 
 var (
@@ -30,13 +30,10 @@ func Serve(addr string, str storage.Storager) error {
 	stogr = str
 
 	gs := gin.New()
-	gs.Use(MDCors())
-	gs.NoRoute(view.UI())
-	gs.Use(MDRecovery(), MDLogger())
+	gs.Use(ginmd.MDCors())
+	gs.Use(ginmd.MDRecovery(), ginmd.MDLogger())
 
 	apiRoute(gs.Group(API_PREFIX))
-
-	dlRoute(gs.Group(API_PREFIX))
 
 	err = http.Serve(lis, gs)
 	if err != nil {
@@ -50,27 +47,6 @@ func Serve(addr string, str storage.Storager) error {
 func apiRoute(gr *gin.RouterGroup) {
 	gr.GET("/_ping", todo)
 
-	gr.GET("/users", ListUsers())
-	gr.POST("/users", CreateUser())
-	gr.GET("/users/:name", GetUserProfile())
-	gr.GET("/users/:name/check", CheckNamespace())
-
-	gr.GET("/orgs", ListOrgs())
-	gr.POST("/orgs", CreateOrg())
-	gr.GET("/orgs/:name", GetOrgProfile())
-	gr.GET("/orgs/:name/check", CheckNamespace())
-
-	gr.GET("/projects/:namespace", ListProjects())
-	gr.GET("/projects/:namespace/:name", GetProjectProfile())
-	gr.POST("/projects/:namespace", CreateProject())
-	gr.DELETE("/projects/:namespace/:name", RemoveProject())
-
-	gr.POST("/files/:namespace/:name", UploadFile())
-}
-
-// dlRoute api router.
-func dlRoute(gr *gin.RouterGroup) {
-	// gr.GET("/:ns/:ns_name", todo)
 }
 
 func todo(ctx *gin.Context) {
@@ -78,7 +54,7 @@ func todo(ctx *gin.Context) {
 		"method": ctx.Request.Method,
 		"path":   ctx.Request.URL.String(),
 	}).Infof("ok.")
-	InternalServerErr(ctx, "todo")
+
 }
 
 func decodeBody(ctx *gin.Context, v interface{}) error {
