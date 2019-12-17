@@ -35,6 +35,10 @@ func Serve(addr string, str storage.Storager) error {
 
 	apiRoute(gs.Group(API_PREFIX))
 
+	dlRoute(gs.Group(API_PREFIX))
+
+	webhookRoute(gs.Group(API_PREFIX))
+
 	err = http.Serve(lis, gs)
 	if err != nil {
 		return err
@@ -47,6 +51,11 @@ func Serve(addr string, str storage.Storager) error {
 func apiRoute(gr *gin.RouterGroup) {
 	gr.GET("/_ping", todo)
 
+}
+
+// webhook api router
+func webhookRoute(gr *gin.RouterGroup) {
+	gr.POST("/webhook/:cmd", DoWebhook())
 }
 
 func todo(ctx *gin.Context) {
