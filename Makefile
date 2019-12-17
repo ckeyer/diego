@@ -28,7 +28,7 @@ env:
 gorun:
 	$(GO) run -ldflags="$(LD_FLAGS)" main.go
 
-build: env go-bindata
+build: env generate-ui
 	$(GO) build -v -ldflags="$(LD_FLAGS)" -o ${GOPATH}/bin/$(APP) main.go
 	$(HASH) ${GOPATH}/bin/$(APP)
 
@@ -49,7 +49,7 @@ test-in-docker:
 	 ${GO_IMAGE} \
 	 go test -ldflags="$(LD_FLAGS)" $$(go list ./... |grep -v "vendor")
 
-go-bindata:
+generate-ui:
 	which go-bindata || go get github.com/jteeuwen/go-bindata/go-bindata
 	go-bindata -nomemcopy -prefix='ui/dist' -o api/view/assets.go -pkg=view ./ui/dist/...
 

@@ -34,9 +34,6 @@ func Serve(addr string, str storage.Storager) error {
 	gs.Use(ginmd.MDRecovery(), ginmd.MDLogger())
 
 	apiRoute(gs.Group(API_PREFIX))
-
-	dlRoute(gs.Group(API_PREFIX))
-
 	webhookRoute(gs.Group(API_PREFIX))
 
 	err = http.Serve(lis, gs)
