@@ -5,14 +5,9 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/ckeyer/diego/pkgs/storage"
-	"github.com/ckeyer/logrus"
+	"github.com/ckeyer/diego/pkgs/apis/ginmd"
 	"github.com/gin-gonic/gin"
-	"gitlab.com/funxdata/commons/pkgs/ginmd"
-)
-
-var (
-	stogr storage.Storager
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -21,13 +16,11 @@ const (
 )
 
 // Serve start http server.
-func Serve(addr string, str storage.Storager) error {
+func Serve(addr string) error {
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		return err
 	}
-
-	stogr = str
 
 	gs := gin.New()
 	gs.Use(ginmd.MDCors())

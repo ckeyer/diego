@@ -1,4 +1,4 @@
-package api
+package ginmd
 
 import (
 	"strings"
@@ -14,7 +14,7 @@ func MDCors() gin.HandlerFunc {
 	return cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
-		AllowHeaders:     []string{"Content-Type", "Limit", "Offset", "Origin", "Accept", "X-Signature"},
+		AllowHeaders:     []string{"Content-Type", "Limit", "Offset", "Origin", "Accept", "X-Signature", "Token", "Sec-WebSocket-Protocol"},
 		ExposeHeaders:    []string{"Content-Length", "Accept-Encoding"},
 		AllowCredentials: true,
 		AllowOriginFunc: func(origin string) bool {
@@ -25,7 +25,7 @@ func MDCors() gin.HandlerFunc {
 }
 
 // MDLogger middleware for http logger.
-func MDLogger() gin.HandlerFunc {
+func MDLogger(ignorePrefix ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		start := time.Now()
 
@@ -38,7 +38,7 @@ func MDLogger() gin.HandlerFunc {
 			"Status": ctx.Writer.Status(),
 		})
 
-		for _, prefix := range []string{API_PREFIX, UI_PREFIX} {
+		for _, prefix := range ignorePrefix {
 			if strings.HasPrefix(ctx.Request.URL.Path, prefix) {
 				logent.Infof("%.6f", time.Now().Sub(start).Seconds())
 				return

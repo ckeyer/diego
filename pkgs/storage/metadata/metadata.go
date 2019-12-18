@@ -3,6 +3,7 @@ package metadata
 import (
 	"errors"
 
+	"github.com/ckeyer/diego/pkgs/users"
 	"github.com/ckeyer/diego/types"
 )
 
@@ -19,27 +20,27 @@ type MetadataStorager interface {
 }
 
 type UserStorager interface {
-	ListUsers(types.ListUserOption) ([]*types.User, error)
-	GetUser(name string) (*types.User, error)
-	CreateUser(*types.User) error
-	UpdateUser(*types.User) (*types.User, error)
+	ListUsers(users.ListUserOption) ([]*users.User, error)
+	GetUser(name string) (*users.User, error)
+	CreateUser(*users.User) error
+	UpdateUser(*users.User) (*users.User, error)
 	RemoveUser(name string) error
 }
 
 type OrgStorager interface {
-	ListOrgs(types.ListOrgOption) ([]*types.Org, error)
-	GetOrg(name string) (*types.Org, error)
-	CreateOrg(*types.Org) error
-	UpdateOrg(*types.Org) (*types.Org, error)
+	ListOrgs(users.ListOrgOption) ([]*users.Org, error)
+	GetOrg(name string) (*users.Org, error)
+	CreateOrg(*users.Org) error
+	UpdateOrg(*users.Org) (*users.Org, error)
 	RemoveOrg(name string) error
 }
 
 // 创建 用户 和 组织 的时候，需要同时创建命名空间
 type NamespaceStorager interface {
 	ExistsNamespace(name string) (bool, error)
-	GetNamespace(name string) (*types.Namespace, error)
-	CreateNamespace(*types.Namespace) error
-	UpdateNamespace(*types.Namespace) (*types.Namespace, error)
+	GetNamespace(name string) (*users.Namespace, error)
+	CreateNamespace(*users.Namespace) error
+	UpdateNamespace(*users.Namespace) (*users.Namespace, error)
 	RemoveNamespace(name string) error
 }
 

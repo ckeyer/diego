@@ -3,7 +3,7 @@ package api
 import (
 	"errors"
 
-	"github.com/ckeyer/diego/tools/webhook"
+	"github.com/ckeyer/diego/hacks/webhook"
 	"github.com/gin-gonic/gin"
 )
 

@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/ckeyer/commons/validate"
-
+	"github.com/ckeyer/diego/pkgs/apis/validate"
 	"github.com/ckeyer/diego/types"
 	"github.com/gin-gonic/gin"
 )

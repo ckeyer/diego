@@ -1,13 +1,12 @@
 package cmd
 
 import (
-	"github.com/ckeyer/commons/version"
 	"github.com/ckeyer/diego/api"
+	"github.com/ckeyer/diego/hacks/webhook"
 	"github.com/ckeyer/diego/pkgs/storage"
 	storage_redis "github.com/ckeyer/diego/pkgs/storage/metadata/redis"
-	"github.com/ckeyer/diego/tools/webhook"
-	"github.com/ckeyer/logrus"
 	"github.com/gomodule/redigo/redis"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -82,7 +81,7 @@ func printVersionCmd() *cobra.Command {
 		Use:     "version",
 		Aliases: []string{"v"},
 		Run: func(cmd *cobra.Command, args []string) {
-			version.Print(nil)
+			// version.Print(nil)
 		},
 	}
 }

@@ -15,22 +15,10 @@
 			"revisionTime": "2018-04-23T13:35:08Z"
 		},
 		{
-			"checksumSHA1": "4R9lCoh0Sd/M2hGww5hN73kbIko=",
-			"path": "github.com/ckeyer/commons/validate",
-			"revision": "d3a6c401a5c7c17ea98af5c638db6e63c3b08278",
-			"revisionTime": "2018-04-23T13:35:08Z"
-		},
-		{
 			"checksumSHA1": "fqVdmkx+ITgBhmBSPzQBv+OiMQ8=",
 			"path": "github.com/ckeyer/commons/version",
 			"revision": "d3a6c401a5c7c17ea98af5c638db6e63c3b08278",
 			"revisionTime": "2018-04-23T13:35:08Z"
-		},
-		{
-			"checksumSHA1": "msTaHvvIzp3ANluqUAd1BufLEac=",
-			"path": "github.com/ckeyer/logrus",
-			"revision": "cc4f6cd584d250e1f1ee03aa19e2e15e9790e7e1",
-			"revisionTime": "2017-12-03T12:12:45Z"
 		},
 		{
 			"checksumSHA1": "XeZ0s/EYoIORsoatbSOJQzIDLgU=",
@@ -61,12 +49,6 @@
 			"path": "github.com/gin-gonic/gin/internal/json",
 			"revision": "f38c30a0d2f56c54397543f08902b00260c70ff6",
 			"revisionTime": "2019-09-06T05:56:59Z"
-		},
-		{
-			"checksumSHA1": "woO1qIxIeQ1bcbPSiMfAKk3r4xg=",
-			"path": "github.com/gin-gonic/gin/json",
-			"revision": "a712f77d7aaec7eb4766a663924aaa4e54d3fe70",
-			"revisionTime": "2017-12-29T09:10:28Z"
 		},
 		{
 			"checksumSHA1": "lbL3cOGzkGouMKZ+lAYnXgOa/DE=",
@@ -115,6 +97,18 @@
 			"path": "github.com/inconshreveable/mousetrap",
 			"revision": "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75",
 			"revisionTime": "2014-10-17T20:07:13Z"
+		},
+		{
+			"checksumSHA1": "JLcM62D/rJgMccqD/h1Rou7bEJU=",
+			"path": "github.com/jinzhu/gorm",
+			"revision": "179760d8343ed15cbb9f071ca824bc35ee7784bb",
+			"revisionTime": "2019-10-28T08:18:11Z"
+		},
+		{
+			"checksumSHA1": "iqeSAF7imnVsW+iqLqf6kkYn1VU=",
+			"path": "github.com/jinzhu/inflection",
+			"revision": "f5c5f50e6090ae76a29240b61ae2a90dd810112e",
+			"revisionTime": "2019-06-03T04:28:36Z"
 		},
 		{
 			"checksumSHA1": "O5KNHAjNKSO1Wh5/4JSnp/KXu9U=",
@@ -175,12 +169,6 @@
 			"path": "golang.org/x/sys/windows",
 			"revision": "4e1fef5609515ec7a2cee7b5de30ba6d9b438cbf",
 			"revisionTime": "2018-08-13T06:52:15Z"
-		},
-		{
-			"checksumSHA1": "39V1idWER42Lmcmg2Uy40wMzOlo=",
-			"path": "gopkg.in/go-playground/validator.v8",
-			"revision": "5f1438d3fca68893a817e4a66806cea46a9e4ebf",
-			"revisionTime": "2017-07-30T05:02:35Z"
 		},
 		{
 			"checksumSHA1": "q7o+U16GkWgYWchMkrMVUWfo5HU=",

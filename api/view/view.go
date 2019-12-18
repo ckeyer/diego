@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/ckeyer/logrus"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 var (
