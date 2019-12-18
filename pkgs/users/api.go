@@ -3,6 +3,7 @@ package users
 import (
 	"net/http"
 
+	"github.com/ckeyer/diego/pkgs/apis"
 	"github.com/ckeyer/diego/pkgs/apis/validate"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -12,7 +13,7 @@ func CheckNamespace() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		exi, err := stogr.ExistsNamespace(ctx.Param("name"))
 		if err != nil {
-			InternalServerErr(ctx, err)
+			apis.InternalServerErr(ctx, err)
 			return
 		}
 
@@ -24,20 +25,20 @@ func CreateUser() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		user := &User{}
 		if err := decodeBody(ctx, user); err != nil {
-			BadRequestErr(ctx, err)
+			apis.BadRequestErr(ctx, err)
 			return
 		}
 		if err := validate.IsDNS1035Label(user.Name); err != nil {
-			BadRequestErr(ctx, err)
+			apis.BadRequestErr(ctx, err)
 			return
 		}
 		if err := validate.IsValidateEmail(user.Email); err != nil {
-			BadRequestErr(ctx, err)
+			apis.BadRequestErr(ctx, err)
 			return
 		}
 
 		if err := stogr.CreateUser(user); err != nil {
-			InternalServerErr(ctx, err)
+			apis.InternalServerErr(ctx, err)
 			return
 		}
 
@@ -49,16 +50,16 @@ func CreateOrg() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		org := &Org{}
 		if err := decodeBody(ctx, org); err != nil {
-			BadRequestErr(ctx, err)
+			apis.BadRequestErr(ctx, err)
 			return
 		}
 		if err := validate.IsDNS1035Label(org.Name); err != nil {
-			BadRequestErr(ctx, err)
+			apis.BadRequestErr(ctx, err)
 			return
 		}
 
 		if err := stogr.CreateOrg(org); err != nil {
-			InternalServerErr(ctx, err)
+			apis.InternalServerErr(ctx, err)
 			return
 		}
 
@@ -70,7 +71,7 @@ func ListUsers() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		us, err := stogr.ListUsers(ListUserOption{})
 		if err != nil {
-			InternalServerErr(ctx, err)
+			apis.InternalServerErr(ctx, err)
 			return
 		}
 		logrus.Debugf("list users")
@@ -84,7 +85,7 @@ func GetUserProfile() gin.HandlerFunc {
 		uname := ctx.Param("name")
 		u, err := stogr.GetUser(uname)
 		if err != nil {
-			InternalServerErr(ctx, err)
+			apis.InternalServerErr(ctx, err)
 			return
 		}
 		logrus.Debugf("%s: %+v", ctx.Request.URL.String(), u)
@@ -96,7 +97,7 @@ func ListOrgs() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		os, err := stogr.ListOrgs(ListOrgOption{})
 		if err != nil {
-			InternalServerErr(ctx, err)
+			apis.InternalServerErr(ctx, err)
 			return
 		}
 		ctx.JSON(http.StatusOK, os)

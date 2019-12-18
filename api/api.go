@@ -40,7 +40,6 @@ func Serve(addr string) error {
 // apiRoute api router.
 func apiRoute(gr *gin.RouterGroup) {
 	gr.GET("/_ping", todo)
-
 }
 
 // webhook api router
