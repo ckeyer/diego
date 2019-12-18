@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ckeyer/diego/storage/metadata"
+	"github.com/ckeyer/diego/pkgs/storage/metadata"
 	"github.com/ckeyer/diego/types"
 )
 

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ckeyer/diego/storage/metadata"
+	"github.com/ckeyer/diego/pkgs/storage/metadata"
 	"github.com/gomodule/redigo/redis"
 )
 

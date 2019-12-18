@@ -5,7 +5,7 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/ckeyer/diego/storage"
+	"github.com/ckeyer/diego/pkgs/storage"
 	"github.com/ckeyer/logrus"
 	"github.com/gin-gonic/gin"
 	"gitlab.com/funxdata/commons/pkgs/ginmd"

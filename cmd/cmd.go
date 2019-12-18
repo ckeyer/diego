@@ -3,9 +3,8 @@ package cmd
 import (
 	"github.com/ckeyer/commons/version"
 	"github.com/ckeyer/diego/api"
-	"github.com/ckeyer/diego/global"
-	"github.com/ckeyer/diego/storage"
-	storage_redis "github.com/ckeyer/diego/storage/metadata/redis"
+	"github.com/ckeyer/diego/pkgs/storage"
+	storage_redis "github.com/ckeyer/diego/pkgs/storage/metadata/redis"
 	"github.com/ckeyer/diego/tools/webhook"
 	"github.com/ckeyer/logrus"
 	"github.com/gomodule/redigo/redis"
@@ -18,12 +17,13 @@ var (
 	storageMode   string
 	redisEndpoint string
 	redisDB       int
+	debug         bool
 	rootCmd       = cobra.Command{
 		Use:   "diego",
 		Short: "diego 版本发布系统",
 		Run:   runServe,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
-			if global.Debug {
+			if debug {
 				logrus.SetLevel(logrus.DebugLevel)
 				logrus.Debug("debug mode")
 				logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -33,7 +33,7 @@ var (
 )
 
 func init() {
-	rootCmd.Flags().BoolVarP(&global.Debug, "debug", "D", false, "debug level")
+	rootCmd.Flags().BoolVarP(&debug, "debug", "D", false, "debug level")
 
 	rootCmd.Flags().StringVarP(&addr, "addr", "s", ":8080", "web server listenning address.")
 	rootCmd.Flags().StringVarP(&dataDir, "data-dir", "d", "/data", "data storage directory.")
