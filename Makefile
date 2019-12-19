@@ -29,8 +29,8 @@ gorun:
 	$(GO) run -ldflags="$(LD_FLAGS)" main.go
 
 build: env generate-ui
-	$(GO) build -v -ldflags="$(LD_FLAGS)" -o ${GOPATH}/bin/$(APP) main.go
-	$(HASH) ${GOPATH}/bin/$(APP)
+	$(GO) build -v -ldflags="$(LD_FLAGS)" -o bundles/$(APP) main.go
+	$(HASH) bundles/$(APP)
 
 test:
 	$(GO) test -cover -covermode=count $$(go list ./... |grep -v "vendor")

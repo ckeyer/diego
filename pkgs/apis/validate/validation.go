@@ -287,3 +287,11 @@ func hasChDirPrefix(value string) []string {
 	}
 	return errs
 }
+
+func IsValidMgoKey(value string) error {
+	errs := IsValidPortName(value)
+	if len(errs) > 0 {
+		return fmt.Errorf("%+v", errs)
+	}
+	return nil
+}

@@ -3,69 +3,38 @@ package cmd
 import (
 	"github.com/ckeyer/diego/api"
 	"github.com/ckeyer/diego/hacks/webhook"
-	"github.com/ckeyer/diego/pkgs/storage"
-	storage_redis "github.com/ckeyer/diego/pkgs/storage/metadata/redis"
-	"github.com/gomodule/redigo/redis"
+	"github.com/ckeyer/diego/pkgs/app"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
 var (
-	addr          string
-	dataDir       string
-	storageMode   string
-	redisEndpoint string
-	redisDB       int
-	debug         bool
-	rootCmd       = cobra.Command{
+	rootCmd = cobra.Command{
 		Use:   "diego",
 		Short: "diego 版本发布系统",
 		Run:   runServe,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
-			if debug {
+			logrus.SetFormatter(&logrus.JSONFormatter{})
+			if app.Debug {
 				logrus.SetLevel(logrus.DebugLevel)
 				logrus.Debug("debug mode")
-				logrus.SetFormatter(&logrus.JSONFormatter{})
 			}
 		},
 	}
 )
 
 func init() {
-	rootCmd.Flags().BoolVarP(&debug, "debug", "D", false, "debug level")
-
-	rootCmd.Flags().StringVarP(&addr, "addr", "s", ":8080", "web server listenning address.")
-	rootCmd.Flags().StringVarP(&dataDir, "data-dir", "d", "/data", "data storage directory.")
-	rootCmd.Flags().StringVar(&redisEndpoint, "redis-endpoint", "127.0.0.1:6379", "redis address.")
-	rootCmd.Flags().StringVar(&storageMode, "storage-mode", "redis", "storage mode('redis', 'etcd', default is 'redis')")
-	rootCmd.Flags().IntVar(&redisDB, "redis-db", 0, "redis db.")
+	rootCmd.Flags().BoolVarP(&app.Debug, "debug", "D", false, "debug level")
+	rootCmd.Flags().StringVarP(&app.Addr, "addr", "s", ":8080", "web server listenning address.")
+	rootCmd.Flags().StringVar(&app.DBType, "db-type", "postgres", "postgres OR mysql.")
+	rootCmd.Flags().StringVar(&app.DBURL, "db-url", "", "database connect URL")
 	rootCmd.Flags().StringVar(&webhook.HookFile, "hook-config", "tools/webhook/webhook.yaml", "webhook config file.")
 }
 
 // runServe start http server.
 func runServe(cmd *cobra.Command, args []string) {
-	var stgr storage.Storager
-	switch storageMode {
-	case "redis":
-		redisOpts := []redis.DialOption{
-			redis.DialDatabase(redisDB),
-		}
-
-		conn, err := redis.Dial("tcp", redisEndpoint, redisOpts...)
-		if err != nil {
-			logrus.Error(err)
-			return
-		}
-
-		stgr = storage_redis.NewRedisStorager(conn)
-	case "etcd":
-	default:
-		logrus.Errorf("invalid storage mode %s", storageMode)
-		return
-	}
-
-	logrus.Infof("listenning at %s", addr)
-	if err := api.Serve(addr, stgr); err != nil {
+	logrus.Infof("listenning at %s", app.Addr)
+	if err := api.Serve(app.Addr); err != nil {
 		logrus.Error(err)
 	}
 }

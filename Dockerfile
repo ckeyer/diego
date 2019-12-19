@@ -27,6 +27,6 @@ MAINTAINER Chuanjian Wang <me@ckeyer.com>
 
 RUN apk add --update ca-certificates
 
-COPY --from=gobin /go/bin/diego /usr/bin/
+COPY --from=gobin /go/src/github.com/ckeyer/diego/bundles/diego /usr/local/bin/
 
-CMD ["/usr/bin/diego"]
+CMD ["/usr/local/bin/diego"]

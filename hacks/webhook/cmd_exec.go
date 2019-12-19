@@ -6,7 +6,6 @@ import (
 	"os/exec"
 
 	"github.com/sirupsen/logrus"
-
 	"gopkg.in/yaml.v2"
 )
 

@@ -1,8 +1,11 @@
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/ckeyer/diego/pkgs/users"
+	"github.com/gin-gonic/gin"
+)
 
 // usersRouters ...
 func usersRouters(gr *gin.RouterGroup) {
-	gr.GET("/")
+	gr.GET("user", users.CreateUser)
 }
