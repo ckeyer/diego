@@ -4,6 +4,7 @@ import (
 	"github.com/ckeyer/diego/api"
 	"github.com/ckeyer/diego/hacks/webhook"
 	"github.com/ckeyer/diego/pkgs/app"
+	"github.com/ckeyer/diego/version"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -50,7 +51,7 @@ func printVersionCmd() *cobra.Command {
 		Use:     "version",
 		Aliases: []string{"v"},
 		Run: func(cmd *cobra.Command, args []string) {
-			// version.Print(nil)
+			version.Print(nil)
 		},
 	}
 }

@@ -17,10 +17,10 @@ var (
 )
 
 func init() {
-	Provide(connDB)
+	Provide(dialDB)
 }
 
-func connDB() (*gorm.DB, error) {
+func dialDB() (*gorm.DB, error) {
 	if DBURL == "" {
 		return nil, fmt.Errorf("require dburl.")
 	}

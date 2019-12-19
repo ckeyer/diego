@@ -13,7 +13,7 @@ GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 BUILD_AT := $(shell date "+%Y-%m-%dT%H:%M:%SZ%z")
 PACKAGE_NAME := $(APP)$(VERSION).$(OS)-$(ARCH)
 
-COMMONS_PKG := $(PKG)/vendor/github.com/ckeyer/commons
+COMMONS_PKG := github.com/ckeyer/diego
 LD_FLAGS := -X ${COMMONS_PKG}/version.version=$(VERSION) \
  -X ${COMMONS_PKG}/version.gitCommit=$(GIT_COMMIT) \
  -X ${COMMONS_PKG}/version.buildAt=$(BUILD_AT)
@@ -22,13 +22,12 @@ IMAGE := ckeyer/${APP}
 GO_IMAGE := ckeyer/dev:go
 UI_IMAGE := ckeyer/dev:vue
 
-env:
-	$(GO) env
-
 gorun:
 	$(GO) run -ldflags="$(LD_FLAGS)" main.go
 
-build: env generate-ui
+build: local
+
+local: generate-ui
 	$(GO) build -v -ldflags="$(LD_FLAGS)" -o bundles/$(APP) main.go
 	$(HASH) bundles/$(APP)
 

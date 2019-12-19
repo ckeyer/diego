@@ -5,9 +5,10 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/ckeyer/diego/version"
+
 	"github.com/ckeyer/diego/pkgs/apis/ginmd"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -39,7 +40,7 @@ func Serve(addr string) error {
 
 // apiRoute api router.
 func apiRoute(gr *gin.RouterGroup) {
-	gr.GET("/_ping", todo)
+	gr.GET("/_ping", getVersion)
 	usersRouters(gr.Group(""))
 }
 
@@ -48,12 +49,8 @@ func webhookRoute(gr *gin.RouterGroup) {
 	gr.POST("/webhook/:cmd", DoWebhook())
 }
 
-func todo(ctx *gin.Context) {
-	logrus.WithFields(logrus.Fields{
-		"method": ctx.Request.Method,
-		"path":   ctx.Request.URL.String(),
-	}).Infof("ok.")
-
+func getVersion(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, version.Map())
 }
 
 func decodeBody(ctx *gin.Context, v interface{}) error {

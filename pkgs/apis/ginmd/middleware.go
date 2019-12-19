@@ -32,19 +32,19 @@ func MDLogger(ignorePrefix ...string) gin.HandlerFunc {
 		ctx.Next()
 
 		logent := logrus.WithFields(logrus.Fields{
-			"Method": ctx.Request.Method,
-			"URL":    ctx.Request.URL.Path,
-			"Remote": ctx.Request.RemoteAddr,
-			"Status": ctx.Writer.Status(),
+			"method": ctx.Request.Method,
+			"url":    ctx.Request.URL.Path,
+			"remote": ctx.Request.RemoteAddr,
+			"code":   ctx.Writer.Status(),
 		})
 
 		for _, prefix := range ignorePrefix {
 			if strings.HasPrefix(ctx.Request.URL.Path, prefix) {
-				logent.Infof("%.6f", time.Now().Sub(start).Seconds())
+				logent.Debugf("%.6f", time.Now().Sub(start).Seconds())
 				return
 			}
 		}
-		logent.Debugf("%.6f", time.Now().Sub(start).Seconds())
+		logent.Infof("%.6f", time.Now().Sub(start).Seconds())
 	}
 }
 

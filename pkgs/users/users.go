@@ -6,7 +6,6 @@ import (
 
 	"github.com/ckeyer/diego/pkgs/apis"
 	"github.com/ckeyer/diego/pkgs/apis/validate"
-	"github.com/ckeyer/diego/pkgs/app"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
@@ -15,12 +14,16 @@ import (
 type User struct {
 	gorm.Model
 
-	Name  string `json:"name"`
-	Email string `json:"email"`
-	Desc  string `json:"desc"`
+	Name  string `json:"name" gorm:"column:name;type:varchar(16)"`
+	Email string `json:"email" gorm:"column:email;type:varchar(32)"`
+	Desc  string `json:"desc" gorm:"column:desc;type:varchar(255)"`
 
-	Joined  time.Time `json:"joined"`
-	Updated time.Time `json:"updated"`
+	Password *string `json:"-" gorm:"column:password;type:varchar(64)"`
+
+	FirstLoginAt  *time.Time `json:"first_login_at" gorm:"column:first_login_at"`
+	LastLoginAt   *time.Time `json:"last_login_at" gorm:"column:last_login_at"`
+	LastLoginIP   *string    `json:"last_login_ip" gorm:"column:last_login_ip;type:varchar(16)"`
+	LastLoginType *string    `json:"last_login_type" gorm:"column:last_login_type;type:varchar(8)"`
 }
 
 func (User) TableName() string {
@@ -32,7 +35,7 @@ type ListUserOption struct {
 }
 
 func CreateUser(ctx *gin.Context) {
-	err := app.Invoke(func(db *gorm.DB) {
+	apis.GinInvoke(ctx, func(db *gorm.DB) {
 		logrus.Info("createUser")
 		user := &User{}
 		if err := ctx.ShouldBindJSON(user); err != nil {
@@ -52,14 +55,8 @@ func CreateUser(ctx *gin.Context) {
 			apis.InternalServerErr(ctx, err.Error())
 			return
 		}
-
 		ctx.JSON(http.StatusOK, user)
 	})
-	if err != nil {
-		logrus.Errorf("%s", err)
-		apis.InternalServerErr(ctx, err)
-		return
-	}
 }
 
 // func ListUsers(ctx *gin.Context) {
