@@ -13,6 +13,7 @@ glide.lock
 _obj
 /bin
 /data
+/api/view/assets.go
 /assets
 /bundles
 /Godeps

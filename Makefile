@@ -25,11 +25,14 @@ UI_IMAGE := ckeyer/dev:vue
 gorun:
 	$(GO) run -ldflags="$(LD_FLAGS)" main.go
 
-build: local
+build: build-ui local
 
 local: generate-ui
 	$(GO) build -v -ldflags="$(LD_FLAGS)" -o bundles/$(APP) main.go
 	$(HASH) bundles/$(APP)
+
+build-ui:
+	make -C ui build-ui
 
 test:
 	$(GO) test -cover -covermode=count $$(go list ./... |grep -v "vendor")

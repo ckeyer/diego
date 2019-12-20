@@ -1,5 +1,5 @@
 PWD := $(shell pwd)
-APP := diego
+APP := diego-ui
 
 UI_IMAGE := ckeyer/dev:vue
 
