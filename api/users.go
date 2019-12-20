@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// usersRouters ...
-func usersRouters(gr *gin.RouterGroup) {
-	gr.GET("user", users.CreateUser)
+// projectsRouters ...
+func projectsRouters(gr *gin.RouterGroup) {
+	gr.GET("users", users.CreateUser)
 }

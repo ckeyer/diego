@@ -5,15 +5,18 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/ckeyer/diego/version"
-
 	"github.com/ckeyer/diego/pkgs/apis/ginmd"
+	"github.com/ckeyer/diego/version"
 	"github.com/gin-gonic/gin"
 )
 
 const (
-	API_PREFIX = "/api"
-	UI_PREFIX  = "/release"
+	// PrefixAPI api前缀
+	PrefixAPI = "api"
+	// PrefixRelease 下载
+	PrefixRelease = "release"
+	// PrefixWebhook webhook
+	PrefixWebhook = "webhook"
 )
 
 // Serve start http server.
@@ -27,8 +30,8 @@ func Serve(addr string) error {
 	gs.Use(ginmd.MDCors())
 	gs.Use(ginmd.MDRecovery(), ginmd.MDLogger())
 
-	apiRoute(gs.Group(API_PREFIX))
-	webhookRoute(gs.Group(API_PREFIX))
+	apiRoute(gs.Group(PrefixAPI))
+	webhookRoute(gs.Group(PrefixWebhook))
 
 	err = http.Serve(lis, gs)
 	if err != nil {
@@ -46,7 +49,7 @@ func apiRoute(gr *gin.RouterGroup) {
 
 // webhook api router
 func webhookRoute(gr *gin.RouterGroup) {
-	gr.POST("/webhook/:cmd", DoWebhook())
+	gr.POST("/webhook/:cmd", DoWebhook)
 }
 
 func getVersion(ctx *gin.Context) {

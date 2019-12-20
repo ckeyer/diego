@@ -16,15 +16,6 @@ const (
 	FileTypeText     = "text"
 )
 
-// Project
-type Project struct {
-	Name      string `json:"name"`
-	Namespace string `json:"namespace"`
-	Desc      string `json:"desc"`
-
-	Created time.Time `json:"created"`
-}
-
 // Metadata
 type FileMetadata struct {
 	Name    string            `json:"name"`
