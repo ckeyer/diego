@@ -27,8 +27,8 @@ gorun:
 
 build: build-ui local
 
-local: generate-ui
-	$(GO) build -v -mod vendor -ldflags="$(LD_FLAGS)" -o bundles/$(APP) main.go
+local: generate-ui generate-docs
+	$(GO) build -v -ldflags="$(LD_FLAGS)" -o bundles/$(APP) main.go
 	$(HASH) bundles/$(APP)
 
 build-ui:
@@ -57,6 +57,10 @@ test-in-docker:
 generate-ui:
 	which go-bindata || go get github.com/jteeuwen/go-bindata/go-bindata
 	go-bindata -nomemcopy -prefix='ui/dist' -o api/view/assets.go -pkg=view ./ui/dist/...
+
+generate-docs:
+	-which swag || go get github.com/swaggo/swag/cmd/swag
+	-swag i -g cmd/docs.go --output docs/swaggo
 
 release: clean local
 	mkdir -p bundles/$(PACKAGE_NAME)

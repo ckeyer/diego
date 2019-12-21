@@ -1,6 +1,48 @@
 package apis
 
+import "github.com/gin-gonic/gin"
+
+const (
+	// DefaultPageSize 返回列表的默认长度
+	DefaultPageSize = 10
+	// PageMaxCount 返回列表的最大长度
+	PageMaxCount = 50
+)
+
+// ListOption 列表选项
 type ListOption struct {
-	Offset int
-	Limit  int
+	Count   int64  `json:"count" form:"count"`
+	Offset  int64  `json:"offset,omitempty" form:"offset"`
+	Limit   int64  `json:"limit,omitempty" form:"limit"`
+	ListAll bool   `json:"list_all,omitempty" form:"list_all"`
+	Sort    string `json:"sort,omitempty" form:"sort"`
+}
+
+// Check 列表选项检查
+func (o *ListOption) Check() error {
+	if o.Offset <= 0 {
+		o.Offset = 0
+	}
+	if o.Limit <= 0 || o.Limit > PageMaxCount {
+		o.Limit = DefaultPageSize
+	}
+	return nil
+}
+
+type checker interface {
+	Check() error
+}
+
+// Query get条件
+func Query(ctx *gin.Context, v interface{}) error {
+	if err := ctx.BindQuery(v); err != nil {
+		return err
+	}
+
+	if ck, ok := v.(checker); ok {
+		if err := ck.Check(); err != nil {
+			return err
+		}
+	}
+	return nil
 }

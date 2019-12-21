@@ -11,6 +11,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const (
+	TUsers = "users"
+)
+
 type User struct {
 	gorm.Model
 
@@ -27,30 +31,37 @@ type User struct {
 }
 
 func (User) TableName() string {
-	return "users"
+	return TUsers
 }
 
-type ListUserOption struct {
+type ListUsersOption struct {
 	apis.ListOption
 }
 
+// CreateUser 新建用户
+// @Tags 用户
+// @Summary 新建
+// @Description 新建用户
+// @Produce json
+// @Param user body users.User true "用户信息"
+// @Success 201
+// @Router /api/users [POST]
 func CreateUser(ctx *gin.Context) {
-	apis.GinInvoke(ctx, func(db *gorm.DB) {
-		logrus.Info("createUser")
-		user := &User{}
-		if err := ctx.ShouldBindJSON(user); err != nil {
-			apis.BadRequestErr(ctx, err.Error())
-			return
-		}
-		if err := validate.IsDNS1035Label(user.Name); err != nil {
-			apis.BadRequestErr(ctx, err)
-			return
-		}
-		if err := validate.IsValidateEmail(user.Email); err != nil {
-			apis.BadRequestErr(ctx, err)
-			return
-		}
+	user := &User{}
+	if err := ctx.ShouldBindJSON(user); err != nil {
+		apis.BadRequestErr(ctx, err.Error())
+		return
+	}
+	if err := validate.IsDNS1035Label(user.Name); err != nil {
+		apis.BadRequestErr(ctx, err)
+		return
+	}
+	if err := validate.IsValidateEmail(user.Email); err != nil {
+		apis.BadRequestErr(ctx, err)
+		return
+	}
 
+	apis.GinInvoke(ctx, func(db *gorm.DB) {
 		if err := db.Create(user).Error; err != nil {
 			apis.InternalServerErr(ctx, err.Error())
 			return
@@ -59,16 +70,50 @@ func CreateUser(ctx *gin.Context) {
 	})
 }
 
-// func ListUsers(ctx *gin.Context) {
-// 	us, err := db.ListUsers(ListUserOption{})
-// 	if err != nil {
-// 		apis.InternalServerErr(ctx, err)
-// 		return
-// 	}
-// 	logrus.Debugf("list users")
+type UserList struct {
+	apis.ListOption
+	Items []*User `json:"items"`
+}
 
-// 	ctx.JSON(http.StatusOK, us)
-// }
+// ListUsers 用户列表
+// @Tags 用户
+// @Summary 列表
+// @Description 用户列表
+// @Produce json
+// @Param offset query int false "起始位置"
+// @Param limit query int false "数量"
+// @Success 200 {object} UserList
+// @Router /api/users [GET]
+func ListUsers(ctx *gin.Context) {
+	opt := &ListUsersOption{}
+	if err := apis.Query(ctx, opt); err != nil {
+		apis.BadRequestErr(ctx, err)
+		return
+	}
+	apis.GinInvoke(ctx, func(db *gorm.DB) {
+		ret := &UserList{
+			Items: []*User{},
+		}
+		query := db.Table(TUsers)
+
+		if err := query.Count(&ret.Count).Error; err != nil {
+			apis.InternalServerErr(ctx, err)
+			return
+		}
+
+		err := query.Offset(opt.Offset).
+			Limit(opt.Limit).
+			Find(&ret.Items).
+			Error
+		if err != nil {
+			apis.InternalServerErr(ctx, err)
+			return
+		}
+		logrus.Debugf("list users")
+
+		ctx.JSON(http.StatusOK, ret)
+	})
+}
 
 // func GetUserProfile(ctx *gin.Context) {
 // 	uname := ctx.Param("name")
