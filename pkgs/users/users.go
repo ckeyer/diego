@@ -115,13 +115,27 @@ func ListUsers(ctx *gin.Context) {
 	})
 }
 
-// func GetUserProfile(ctx *gin.Context) {
-// 	uname := ctx.Param("name")
-// 	u, err := db.GetUser(uname)
-// 	if err != nil {
-// 		apis.InternalServerErr(ctx, err)
-// 		return
-// 	}
-// 	logrus.Debugf("%s: %+v", ctx.Request.URL.String(), u)
-// 	ctx.JSON(http.StatusOK, u)
-// }
+// GetUserProfile 用户详情
+// @Tags 用户
+// @Summary 详情
+// @Description 用户详情
+// @Produce json
+// @Param user_id path int false "用户id"
+// @Success 200 {object} users.User
+// @Router /api/users/{user_id} [GET]
+func GetUserProfile(ctx *gin.Context) {
+	id := apis.QueryID(ctx, "user_id")
+	if id <= 0 {
+		apis.BadRequestErr(ctx, "invalid user_id")
+		return
+	}
+	apis.GinInvoke(ctx, func(db *gorm.DB) {
+		u := &User{}
+		err := db.Table(TUsers).Find(u, "id = ?", id).Error
+		if err != nil {
+			apis.InternalServerErr(ctx, err)
+			return
+		}
+		ctx.JSON(http.StatusOK, u)
+	})
+}

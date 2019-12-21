@@ -44,7 +44,7 @@ func Serve(addr string) error {
 // apiRoute api router.
 func apiRoute(gr *gin.RouterGroup) {
 	gr.GET("/_ping", getVersion)
-	usersRouters(gr.Group(""))
+	usersRouters(gr.Group("users"))
 }
 
 // webhook api router
