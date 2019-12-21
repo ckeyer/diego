@@ -34,7 +34,10 @@ local: generate-ui
 build-ui:
 	make -C ui build-ui
 
-test:
+build-ui-in-docker:
+	make -C ui build-in-docker
+
+test: build-ui-in-docker generate-ui
 	$(GO) test -cover -covermode=count $$(go list ./... |grep -v "vendor")
 
 image:

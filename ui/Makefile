@@ -9,6 +9,12 @@ env:
 	npm config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 	npm install
 
+build-in-docker:
+	docker run --rm \
+	 --name ${APP} \
+	 -v ${PWD}:/tmp/${APP} \
+	 -w /tmp/${APP} \
+	 ${UI_IMAGE} make build-ui
 
 build-ui: clean-ui
 	npm install

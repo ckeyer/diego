@@ -17,7 +17,6 @@ _obj
 /assets
 /bundles
 /Godeps
-VERSION.txt
 
 # Architecture specific extensions/prefixes
 *.[568vq]
