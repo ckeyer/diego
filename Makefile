@@ -28,7 +28,7 @@ gorun:
 build: build-ui local
 
 local: generate-ui
-	$(GO) build -v -ldflags="$(LD_FLAGS)" -o bundles/$(APP) main.go
+	$(GO) build -v -mod vendor -ldflags="$(LD_FLAGS)" -o bundles/$(APP) main.go
 	$(HASH) bundles/$(APP)
 
 build-ui:

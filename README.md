@@ -1,4 +1,7 @@
 # Diego
+
+[原始仓库](https://github.com/ckeyer/diego) | [国内镜像](https://gitee.com/ckeyer/diego)
+
 ![](./diego.jpg)
 版本发布程序
 
