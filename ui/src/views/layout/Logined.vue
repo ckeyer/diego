@@ -1,15 +1,23 @@
 <template>
   <el-container>
-    <el-aside width="200px">Aside</el-aside>
+    <main-aside></main-aside>
     <el-container>
-      <el-header>Header</el-header>
-      <el-main>Main</el-main>
+      <main-header></main-header>
+      <main-container></main-container>
     </el-container>
   </el-container>
 </template>
 
 <script>
+import MainAside from '@/components/home/Aside.vue'
+import MainHeader from '@/components/home/Header.vue'
+import MainContainer from '@/components/home/Main.vue'
 export default {
+  components: {
+    MainAside,
+    MainHeader,
+    MainContainer,
+  },
   data() {
     return {
       key: 'value'
@@ -18,7 +26,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .el-header,
 .el-footer {
   background-color: #b3c0d1;
