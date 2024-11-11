@@ -18,6 +18,8 @@ const (
 	PrefixRelease = "release"
 	// PrefixWebhook webhook
 	PrefixWebhook = "webhook"
+
+	PrefixAPITest = "test"
 )
 
 // Serve start http server.
@@ -60,4 +62,8 @@ func getVersion(ctx *gin.Context) {
 
 func decodeBody(ctx *gin.Context, v interface{}) error {
 	return json.NewDecoder(ctx.Request.Body).Decode(v)
+}
+
+func EncodeJSON(ctx *gin.Context, v interface{}) error {
+	return json.NewEncoder(ctx.Writer).Encode(v)
 }
