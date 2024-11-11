@@ -5,7 +5,6 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/ckeyer/diego/api/view"
 	"github.com/ckeyer/diego/pkgs/apis/ginmd"
 	"github.com/ckeyer/diego/version"
 	"github.com/gin-gonic/gin"
@@ -18,6 +17,8 @@ const (
 	PrefixRelease = "release"
 	// PrefixWebhook webhook
 	PrefixWebhook = "webhook"
+
+	Prefix_Api_Test = "test"
 )
 
 // Serve start http server.
@@ -29,7 +30,7 @@ func Serve(addr string) error {
 
 	gs := gin.New()
 	gs.Use(ginmd.MDCors())
-	gs.NoRoute(view.UI())
+	// gs.NoRoute(view.UI())
 	gs.Use(ginmd.MDRecovery(), ginmd.MDLogger())
 
 	apiRoute(gs.Group(PrefixAPI))
@@ -60,4 +61,8 @@ func getVersion(ctx *gin.Context) {
 
 func decodeBody(ctx *gin.Context, v interface{}) error {
 	return json.NewDecoder(ctx.Request.Body).Decode(v)
+}
+
+func EncodeJSON(ctx *gin.Context, v interface{}) error {
+	return json.NewEncoder(ctx.Writer).Encode(v)
 }
