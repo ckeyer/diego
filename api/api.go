@@ -19,7 +19,7 @@ const (
 	// PrefixWebhook webhook
 	PrefixWebhook = "webhook"
 
-	PrefixAPITest = "test"
+	Prefix_Api_Test = "test"
 )
 
 // Serve start http server.
