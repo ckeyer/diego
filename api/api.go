@@ -5,7 +5,6 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/ckeyer/diego/api/view"
 	"github.com/ckeyer/diego/pkgs/apis/ginmd"
 	"github.com/ckeyer/diego/version"
 	"github.com/gin-gonic/gin"
@@ -31,7 +30,7 @@ func Serve(addr string) error {
 
 	gs := gin.New()
 	gs.Use(ginmd.MDCors())
-	gs.NoRoute(view.UI())
+	// gs.NoRoute(view.UI())
 	gs.Use(ginmd.MDRecovery(), ginmd.MDLogger())
 
 	apiRoute(gs.Group(PrefixAPI))
